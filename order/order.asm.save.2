@@ -1,0 +1,74 @@
+%include "/usr/local/share/csc314/asm_io.inc"
+%define LET 32	;___1_____
+%define ONI	16	;____1____
+%define TOM 8	;_____1___
+%define PIC 4	;______1__
+%define MUS 2	;_______1_
+%define KET 1	;________1
+
+
+segment .data
+
+	letMsg		db	"Lettuce?: ",0,10
+	oniMsg		db 	"Onions?: ",0,10
+	tomMsg		db	"Tomato?: ",0,10
+	picMsg		db	"Pickles?: ",0,10
+	musMsg		db	"Mustard?: ",0,10
+	ketMsg		db	"Ketchup?: ",0,10
+
+	theEnd		db	"The End.", 0xa
+segment .bss
+
+	res		resd	1
+
+segment .text
+	global  asm_main
+
+asm_main:
+	push	ebp
+	mov		ebp, esp
+	; ********** CODE STARTS HERE **********
+
+	;; Lettuce
+	mov		eax, letMsg
+	call	print_string
+
+		;; Accepting the user input
+		call	read_char
+			mov		dl, al ;; storing the input
+
+		;; checking if it is a yes or no
+		cmp		dl, 'n'
+		je		onionPrompt
+
+			;; if yes, add the value to the result
+			mov		DWORD [res], LET
+
+onionPrompt:
+	;; Onion
+	mov		eax, oniMsg
+	call	print_string
+
+		;; User input
+		call	read_char
+			mov		dl, al ;
+
+		cmp		dl, 'n'
+		je		tomatoPrompt
+
+			;;
+			add		DWORD [res], ONI
+
+tomatoPrompt:
+	;; Tomato
+result:
+	;; printing the final calculated result
+	mov		eax, DWORD [res]
+	call	print_int
+end:
+	call	print_nl
+	; *********** CODE ENDS HERE ***********
+	mov		eax, 0
+	mov		esp, ebp
+	pop		ebp
+	ret

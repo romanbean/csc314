@@ -1,0 +1,37 @@
+%include "/usr/local/share/csc314/asm_io.inc"
+
+
+segment .data
+
+	messages db "h", "e", "l","l", "o", 10, "w", "o", "r", "l", "d", 10
+	
+segment .bss
+
+
+segment .text
+	global  asm_main
+
+asm_main:
+	push	ebp
+	mov		ebp, esp
+	; ********** CODE STARTS HERE **********
+
+	;; counter
+		mov		ecx, 0
+	print_loop:
+		cmp		ecx, 12
+		jge		end
+
+		mov		al, BYTE [messages + ecx * 1]
+		call	print_char
+
+		add		ecx, 1
+		jmp 	print_loop
+
+	end:
+		call	print_nl
+	; *********** CODE ENDS HERE ***********
+	mov		eax, 0
+	mov		esp, ebp
+	pop		ebp
+	ret

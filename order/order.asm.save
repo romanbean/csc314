@@ -1,0 +1,53 @@
+%include "/usr/local/share/csc314/asm_io.inc"
+%define LET 32	;___1_____
+%define ONI	16	;____1____
+%define TOM 8	;_____1___
+%define PIC 4	;______1__
+%define MUS 2	;_______1_
+%define KET 1	;________1
+
+
+segment .data
+
+	prompts		db	"Lettuce?: ", "Onions?: ", "Tomato?: ", "Pickle?: ", "Mustard?: ", "Ketchup?: "
+
+segment .bss
+
+
+segment .text
+	global  asm_main
+
+asm_main:
+	push	ebp
+	mov		ebp, esp
+	; ********** CODE STARTS HERE **********
+
+	mov		ecx, 0
+	;; Printing the messages for the input
+messagesLoop:
+	cmp		ecx, 5
+	jge		result
+		;; printing prompts one at time
+		mov		eax,	DWORD [prompts + ecx * 4]
+	jmp		messagesLoop
+
+result:
+
+
+
+
+	;; printing the final calculated result
+
+input:
+	call	read_char
+		mov		dl, al ;; storing the input
+
+	ret
+
+end:
+	call	print_nl
+	; *********** CODE ENDS HERE ***********
+	mov		eax, 0
+	mov		esp, ebp
+	pop		ebp
+	ret
